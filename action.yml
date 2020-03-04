@@ -1,0 +1,19 @@
+name: 'Assign Issue'
+description: 'Assign an issue to a member of a team or users.'
+author: 'Your name or organization here'
+inputs:
+  org-token:
+    description: 'The GitHub token to read organization teams with.'
+    required: yes
+  token:
+    description: 'The GitHub token to access the repository with.'
+    required: yes
+  match:
+    description: 'A regular expression the issue or pull request title must match.'
+    default: ''
+  team:
+    description: 'The team to assign an issue to.'
+    default: ''
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
