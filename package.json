@@ -1,0 +1,41 @@
+{
+  "name": "assign-issue",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GitHub Action to assign an issue or pull request to a random GitHub Team member.",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "pack": "ncc build",
+    "all": "npm run build && npm run format && npm run lint && npm run pack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nilium/assign-issue.git"
+  },
+  "keywords": [
+    "actions",
+    "github",
+    "issues",
+    "pull-requests",
+    "assign"
+  ],
+  "author": "Noel Cower",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.14",
+    "@typescript-eslint/parser": "^2.10.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^5.16.0",
+    "eslint-plugin-github": "^2.0.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.2"
+  }
+}

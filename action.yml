@@ -1,0 +1,13 @@
+name: 'Assign Issue'
+description: 'Assign an issue to a member of a team or users.'
+author: 'Your name or organization here'
+inputs:
+  match:
+    description: 'A regular expression the issue or pull request title must match.'
+    default: ''
+  team:
+    description: 'The team to assign an issue to.'
+    default: ''
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
