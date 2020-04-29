@@ -2036,10 +2036,9 @@ function assignTeam(team) {
     const org = desc[0];
     const slug = desc[1];
     const options = octokit.teams.listMembersInOrg.endpoint.merge({
-        org: org,
-        team_slug: slug
+        org,
+        team_slug: slug // eslint-disable-line @typescript-eslint/camelcase
     });
-    let user = '';
     octokit.paginate(options).then((members) => __awaiter(this, void 0, void 0, function* () {
         if (members.length === 0) {
             core.info('No member in team: skipping action.');
@@ -2054,16 +2053,15 @@ function assignTeam(team) {
 function assignUser(user) {
     var _a, _b;
     switch (github.context.eventName) {
-        case 'pull_request':
-            {
-                let number = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
-                if (number != null) {
-                    assignUserToIssue(user, number);
-                }
-                break;
+        case 'pull_request': {
+            const number = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
+            if (typeof number == 'number') {
+                assignUserToIssue(user, number);
             }
+            break;
+        }
         case 'issues': {
-            let number = (_b = github.context.payload.issue) === null || _b === void 0 ? void 0 : _b.number;
+            const number = (_b = github.context.payload.issue) === null || _b === void 0 ? void 0 : _b.number;
             if (number != null) {
                 assignUserToIssue(user, number);
             }
@@ -2091,26 +2089,17 @@ function assignUserToIssue(user, number) {
     const token = core.getInput('token');
     const octokit = new github.GitHub(token);
     octokit.issues.addAssignees({
-        owner: owner,
+        owner,
         repo: repoName,
         issue_number: number,
-        assignees: [user],
+        assignees: [user]
     });
-}
-function toList(str) {
-    if (str === '') {
-        return [];
-    }
-    return str
-        .split(',')
-        .map(it => it.trim())
-        .filter(it => it != '');
 }
 function run() {
     var _a, _b, _c, _d, _e, _f, _g, _h;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let title = '';
+            let title;
             switch (github.context.eventName) {
                 case 'pull_request':
                     if (((_b = (_a = github.context.payload) === null || _a === void 0 ? void 0 : _a.issue) === null || _b === void 0 ? void 0 : _b.assignees) != null &&

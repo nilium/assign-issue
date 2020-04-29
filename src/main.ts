@@ -8,7 +8,7 @@ function rand(min: number, max: number): number {
   return min + Math.floor(Math.random() * range)
 }
 
-function assignTeam(team: string) {
+function assignTeam(team: string): void {
   const orgToken = core.getInput('org-token')
   const octokit = new github.GitHub(orgToken)
 
@@ -20,11 +20,10 @@ function assignTeam(team: string) {
   const slug = desc[1]
 
   const options = octokit.teams.listMembersInOrg.endpoint.merge({
-    org: org,
-    team_slug: slug
+    org,
+    team_slug: slug // eslint-disable-line @typescript-eslint/camelcase
   })
 
-  let user: string = ''
   octokit.paginate(options).then(async members => {
     if (members.length === 0) {
       core.info('No member in team: skipping action.')
@@ -38,18 +37,17 @@ function assignTeam(team: string) {
   })
 }
 
-function assignUser(user: string) {
+function assignUser(user: string): void {
   switch (github.context.eventName) {
-    case 'pull_request':
-      {
-        let number = github.context.payload.pull_request?.number
-        if (number != null) {
-          assignUserToIssue(user, number)
-        }
-        break
+    case 'pull_request': {
+      const number = github.context.payload.pull_request?.number
+      if (typeof number == 'number') {
+        assignUserToIssue(user, number)
       }
+      break
+    }
     case 'issues': {
-      let number = github.context.payload.issue?.number
+      const number = github.context.payload.issue?.number
       if (number != null) {
         assignUserToIssue(user, number)
       }
@@ -79,26 +77,16 @@ function assignUserToIssue(user: string, number: number): void {
   const token = core.getInput('token')
   const octokit = new github.GitHub(token)
   octokit.issues.addAssignees({
-    owner: owner,
+    owner,
     repo: repoName,
-    issue_number: number,
-    assignees: [user],
+    issue_number: number, // eslint-disable-line @typescript-eslint/camelcase
+    assignees: [user]
   })
-}
-
-function toList(str: string): string[] {
-  if (str === '') {
-    return []
-  }
-  return str
-    .split(',')
-    .map(it => it.trim())
-    .filter(it => it != '')
 }
 
 async function run(): Promise<void> {
   try {
-    let title: string = ''
+    let title: string
     switch (github.context.eventName) {
       case 'pull_request':
         if (
