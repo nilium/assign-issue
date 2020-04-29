@@ -1,6 +1,6 @@
 {
   "name": "assign-issue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "GitHub Action to assign an issue or pull request to a random GitHub Team member.",
   "main": "lib/main.js",
